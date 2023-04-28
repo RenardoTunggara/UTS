@@ -1,0 +1,11 @@
+pipeline {
+    agent any
+    stages {
+        stage('Build') {
+            steps {
+                sh 'docker build . -t redlock-web-2.0/php'
+                sh 'docker run -d --name redlock-web -p 7077:80 --network redlock-net redlock-web-2.0/php'
+            }
+        }
+    }
+}
