@@ -4,7 +4,8 @@ pipeline {
         stage('Build') {
             steps {
                 sh 'docker build . -t redlock-web-2.0/php'
-                powershell 'if (Test-NetConnection -ComputerName localhost -Port 7077:80 -InformationLevel Quiet) { docker stop redlock-web ; docker rm redlock-web }'
+                sh 'docker stop redlock-web || true' // Menghentikan kontainer dan mengabaikan kesalahan jika kontainer tidak berjalan
+                sh 'docker rm redlock-web || true'
                 sh 'docker run -d --name redlock-web -p 7077:80 --network redlock-net redlock-web-2.0/php'
             }
         }
