@@ -13,22 +13,26 @@ if (!$koneksi) {
   die("Koneksi gagal: " . mysqli_connect_error());
 }
 
+// Mengeksekusi query SQL
+$sql = "SELECT * FROM users";
+$result = mysqli_query($koneksi, $sql);
 
-// query untuk mengambil jumlah user
-$query = "SELECT COUNT(*) AS total_user FROM users";
-$hasil = mysqli_query($koneksi, $query);
-
-// cek hasil query
-if (!$hasil) {
-  echo "Error: " . mysqli_error($koneksi);
+// Memeriksa apakah query berhasil dieksekusi
+if (!$result) {
+  die("Query gagal dieksekusi: " . mysqli_error($koneksi));
 }
 
-// ambil data jumlah user
-$data = mysqli_fetch_assoc($hasil);
-$jumlah_user = $data['total_user'];
+// Menampilkan data hasil query
+if (mysqli_num_rows($result) > 0) {
+  echo "<table>";
+  echo "<tr><th>ID</th><th>Nama</th><th>Alamat</th><th>Jabatan</th></tr>";
+  while ($row = mysqli_fetch_assoc($result)) {
+    echo "<tr><td>".$row["ID"]."</td><td>".$row["nama"]."</td><td>".$row["alamat"]."</td><td>".$row["jabatan"]."</td></tr>";
+  }
+  echo "</table>";
+} else {
+  echo "Tidak ada data yang ditemukan";
+}
 
-// tampilkan jumlah user
-echo "Jumlah user: " . $jumlah_user;
-
-// tutup koneksi
+// Menutup koneksi
 mysqli_close($koneksi);
