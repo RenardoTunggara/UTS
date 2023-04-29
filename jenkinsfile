@@ -4,7 +4,7 @@ pipeline {
         stage('Build') {
             steps {
                 sh 'docker build . -t redlock-web-2.0/php'
-                sh 'docker stop redlock-web || true' // Menghentikan kontainer dan mengabaikan kesalahan jika kontainer tidak berjalan
+                sh 'docker stop redlock-web || true'
                 sh 'docker rm redlock-web || true'
                 sh 'docker run -d --name redlock-web -p 7077:80 --network redlock-net redlock-web-2.0/php'
             }
